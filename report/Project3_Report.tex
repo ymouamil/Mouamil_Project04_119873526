@@ -1,0 +1,138 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb, graphicx, listings, xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{hypercap}
+
+\definecolor{BLUE}{RGB}{0,84,159}
+\definecolor{GRAY}{RGB}{128,128,128}
+
+\begin{document}
+
+\begin{center}
+  {\Huge\bfseries\color{BLUE} ENEE322/ENEE323 Project 3}\\[6mm]
+  {\Large Piano Note Spectral Analysis and Synthesis}\\[4mm]
+  \hrule
+  \vspace{5mm}
+  {\large \textbf{Student:} Yahya Mouamil}\\[3mm]
+  {\large \textbf{UID:} 119873526}\\[3mm]
+  {\large \textbf{Date:} April 9, 2026}\\[3mm]
+  \hrule
+\end{center}
+
+\section*{Problem (i): DFT and Fundamental Frequency}
+
+The DFT of the piano note was computed. The magnitude spectrum revealed regularly spaced harmonic peaks.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.7\textwidth]{Fig1_Spectrum.png}
+\caption{Magnitude spectrum of the piano note}
+\end{figure}
+
+The fundamental frequency index was found to be:
+\[
+\boxed{K_1 = 1173}
+\]
+
+The corresponding frequency is:
+\[
+f_{\text{fundamental}} = \frac{K_1 \cdot f_s}{N} = \frac{1173 \cdot 11025}{33000} = 391.55 \text{ Hz}
+\]
+
+This corresponds to the musical note \boxed{\textbf{G4}}.
+
+\section*{Problem (ii): dB Magnitude Plot}
+
+The magnitude spectrum in decibels is shown below:
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.7\textwidth]{Fig2_dB.png}
+\caption{dB magnitude spectrum}
+\end{figure}
+
+The maximum dB value is:
+\[
+\boxed{dB_{\text{max}} = 39.84 \text{ dB}}
+\]
+
+\section*{Problem (iii): dB Thresholding}
+
+For attenuation values of 40 dB and 60 dB, entries below \(dB_{\text{max}} - att\) were zeroed out.
+
+\begin{tabular}{|c|c|}
+\hline
+\textbf{att (dB)} & \textbf{Non-zero entries} \\
+\hline
+40 & 550 \\
+60 & 3678 \\
+\hline
+\end{tabular}
+
+The reconstructed signals without taper have abrupt boundaries causing audible clicks. Applying the taper smooths these discontinuities.
+
+\section*{Problem (iv): Pure Harmonic Signal}
+
+A pure harmonic signal was created using only frequencies at multiples of \(K_1 = 1173\):
+
+\[
+\text{Max harmonics possible} = 13
+\]
+\[
+\text{Khalf} = 586
+\]
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.7\textwidth]{Figure4_Vee2.png}
+\caption{Vee2 - Pure harmonic signal with constant amplitude}
+\end{figure}
+
+\section*{Problem (v): Hamming Window}
+
+Applying a Hamming window to Vee2 smooths the boundaries but does not recreate the natural decay envelope of the piano.
+
+\section*{Problem (vi): Highest Harmonic Replacement}
+
+Vsave1 contains \textbf{6 nontrivial harmonics}. The highest harmonic index is 7039. Replacing its cluster with a single entry produced a subtle but perceptible change in timbre.
+
+\section*{Problem (vii): Exponential Envelope}
+
+An exponential envelope \(A e^{-ct/N}\) with \(A = \max(|v_{\text{note}}|)\) and \(c = 3.5\) was fitted to the original signal:
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.7\textwidth]{Figure7_Envelope.png}
+\caption{Exponential envelope fit to original vnote}
+\end{figure}
+
+Multiplying Vee2 by this envelope produced Vee4, which sounds significantly closer to the original piano note, though it lacks the inharmonicity and noise of a real piano.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.7\textwidth]{Figure8_Vee4_Spectrum.png}
+\caption{Magnitude spectrum of Vee4}
+\end{figure}
+
+\section*{Summary of Results}
+
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Parameter} & \textbf{Value} \\
+\hline
+\(K_1\) & 1173 \\
+Fundamental frequency & 391.55 Hz \\
+Musical note & G4 \\
+\(dB_{\text{max}}\) & 39.84 dB \\
+Harmonics in Vsave1 & 6 \\
+Highest harmonic index & 7039 \\
+Max harmonics possible & 13 \\
+\hline
+\end{tabular}
+
+\vspace{8mm}
+\begin{center}
+  {\color{BLUE} \Large End of Project 3}
+\end{center}
+
+\end{document}
